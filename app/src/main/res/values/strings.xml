@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NetologyApp</string>
+    <string name="login_hello">Netology Homework App</string>
+    <string name="hello_button">Start</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="friends_no_items">No news</string>
+    <string name="login_hello_md">By: AliceCarroll239</string>
+    <string name="first_screen">News api</string>
+</resources>
