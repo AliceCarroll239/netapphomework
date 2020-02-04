@@ -6,4 +6,8 @@
     <string name="friends_no_items">No news</string>
     <string name="login_hello_md">By: AliceCarroll239</string>
     <string name="first_screen">News api</string>
+    <string name="player_error">Error initializing YouTube player: %s</string>
+    <string name="seek_to">Jump To</string>
+    <string name="seek_to_hint">Seconds</string>
+    <string name="thumbnail_image_view_desc" />
 </resources>

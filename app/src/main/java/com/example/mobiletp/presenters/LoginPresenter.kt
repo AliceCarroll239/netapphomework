@@ -21,5 +21,4 @@ class LoginPresenter: MvpPresenter<LoginView>() {
             }
         }, 500)
     }
-
 }

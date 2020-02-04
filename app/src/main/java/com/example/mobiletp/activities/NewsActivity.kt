@@ -3,18 +3,24 @@ package com.example.mobiletp.activities
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobiletp.R
 import com.example.mobiletp.adapters.NewsAdapter
+import com.example.mobiletp.configuration.GlobalParameters
 import com.example.mobiletp.models.NewsModel
 import com.example.mobiletp.presenters.NewsPresenter
 import com.example.mobiletp.views.NewsView
 import com.github.rahatarmanahmed.cpv.CircularProgressView
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerSupportFragment
 import moxy.MvpAppCompatActivity
 import moxy.presenter.InjectPresenter
 
-class NewsActivity : MvpAppCompatActivity(), NewsView {
+
+class NewsActivity : MvpAppCompatActivity(), NewsView, YouTubePlayer.OnInitializedListener {
 
     override fun setupNewsList(newsList: List<NewsModel>) {
         mRVDevices.visibility = View.VISIBLE
@@ -30,6 +36,8 @@ class NewsActivity : MvpAppCompatActivity(), NewsView {
     private lateinit var mCpvWait: CircularProgressView
     private lateinit var mTxtNoDevices: TextView
     private lateinit var mRVDevices: RecyclerView
+    private lateinit var mPlayer: TextView
+    private val RECOVERY_DIALOG_REQUEST = 1
 
     override fun showError(messageResource: Int) {
         mTxtNoDevices.text = getString(messageResource)
@@ -57,14 +65,48 @@ class NewsActivity : MvpAppCompatActivity(), NewsView {
         mRVDevices = findViewById(R.id.recycler_devices)
         mTxtNoDevices = findViewById(R.id.txt_devices_no_items)
         mCpvWait = findViewById(R.id.cpv_devices_progress_view)
+        //mPlayer = findViewById(R.id.youtube_player)
 
         devicePresenter.loadNews()
-        mAdapter = NewsAdapter()
+        mAdapter = NewsAdapter(this)
 
         mRVDevices.apply {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
+        }
+
+//        mPlayer.setOnClickListener{
+//            openYoutube()
+//        }
+
+        val youTubePlayerFragment =
+            supportFragmentManager.findFragmentById(R.id.player_view) as YouTubePlayerSupportFragment?
+        youTubePlayerFragment?.initialize(GlobalParameters.youtubeKEY, this)
+    }
+
+    override fun onInitializationSuccess(
+        provider: YouTubePlayer.Provider,
+        youTubePlayer: YouTubePlayer,
+        wasRestored: Boolean
+    ) {
+        if (!wasRestored) {
+            youTubePlayer.cueVideo("fhWaJi1Hsfo")
+        }
+    }
+
+    override fun onInitializationFailure(
+        provider: YouTubePlayer.Provider,
+        youTubeInitializationResult: YouTubeInitializationResult
+    ) {
+        if (youTubeInitializationResult.isUserRecoverableError) {
+            youTubeInitializationResult.getErrorDialog(this, RECOVERY_DIALOG_REQUEST).show()
+        } else {
+            val errorMessage = String.format(
+                "Something went wrong",
+                youTubeInitializationResult.toString()
+            )
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.example.mobiletp.utils
 
+import android.net.Uri
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class Utils {
 
@@ -31,5 +33,24 @@ class Utils {
 
     fun String.minute(): String {
         return this.subSequence(startIndex = 14, endIndex = 16).toString()
+    }
+
+    fun getRandomLocation(x0: Double, y0: Double, radius: Int): Uri? {
+        val random = Random()
+        val radiusInDegrees = (radius / 111000f).toDouble()
+        val u = random.nextDouble()
+        val v = random.nextDouble()
+        val w = radiusInDegrees * Math.sqrt(u)
+        val t = 2.0 * Math.PI * v
+        val x = w * Math.cos(t)
+        val y = w * Math.sin(t)
+        val new_x = x / Math.cos(Math.toRadians(y0))
+        val foundLongitude = new_x + x0
+        val foundLatitude = y + y0
+        return Uri.parse("geo:$foundLongitude,$foundLatitude")
+    }
+
+    fun isMap(): Boolean {
+        return Random().nextBoolean()
     }
 }

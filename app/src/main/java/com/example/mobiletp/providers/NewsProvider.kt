@@ -7,6 +7,7 @@ import com.example.mobiletp.api.utils.ApiBuilder
 import com.example.mobiletp.configuration.GlobalParameters
 import com.example.mobiletp.models.NewsModel
 import com.example.mobiletp.presenters.NewsPresenter
+import com.example.mobiletp.utils.Utils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -28,7 +29,9 @@ class NewsProvider(var presenter: NewsPresenter) {
                         liked = false,
                         content = contentChecker(it.content),
                         commentCount = (0..100).random(),
-                        shareCount = (0..100).random()
+                        shareCount = (0..100).random(),
+                        needMap = Utils().isMap(),
+                        location = Utils().getRandomLocation(37.7749, -122.4194, 10000)
                     ))
                 }
             }
