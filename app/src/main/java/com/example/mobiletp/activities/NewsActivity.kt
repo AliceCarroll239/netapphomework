@@ -65,7 +65,6 @@ class NewsActivity : MvpAppCompatActivity(), NewsView, YouTubePlayer.OnInitializ
         mRVDevices = findViewById(R.id.recycler_devices)
         mTxtNoDevices = findViewById(R.id.txt_devices_no_items)
         mCpvWait = findViewById(R.id.cpv_devices_progress_view)
-        //mPlayer = findViewById(R.id.youtube_player)
 
         devicePresenter.loadNews()
         mAdapter = NewsAdapter(this)
@@ -75,10 +74,6 @@ class NewsActivity : MvpAppCompatActivity(), NewsView, YouTubePlayer.OnInitializ
             layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
         }
-
-//        mPlayer.setOnClickListener{
-//            openYoutube()
-//        }
 
         val youTubePlayerFragment =
             supportFragmentManager.findFragmentById(R.id.player_view) as YouTubePlayerSupportFragment?

@@ -19,20 +19,21 @@ class NewsProvider(var presenter: NewsPresenter) {
         Handler().postDelayed({
             val newsList: ArrayList<NewsModel> = ArrayList()
             runBlocking {
+                //CoroutineScope(Dispatchers.IO).launch {
                 getNews()?.forEach {
-                newsList.add(
-                    NewsModel(
-                        title = it.title!!,
-                        urlToImage = imageChecker(it.urlToImage),
-                        publishedAt = it.publishedAt!!,
-                        likeCount = (0..100).random(),
-                        liked = false,
-                        content = contentChecker(it.content),
-                        commentCount = (0..100).random(),
-                        shareCount = (0..100).random(),
-                        needMap = Utils().isMap(),
-                        location = Utils().getRandomLocation(37.7749, -122.4194, 10000)
-                    ))
+                    newsList.add(
+                        NewsModel(
+                            title = it.title!!,
+                            urlToImage = imageChecker(it.urlToImage),
+                            publishedAt = it.publishedAt!!,
+                            likeCount = (0..100).random(),
+                            liked = false,
+                            content = contentChecker(it.content),
+                            commentCount = (0..100).random(),
+                            shareCount = (0..100).random(),
+                            needMap = Utils().isMap(),
+                            location = Utils().getRandomLocation(37.7749, -122.4194, 10000)
+                        ))
                 }
             }
             presenter.newsLoaded(newsList)

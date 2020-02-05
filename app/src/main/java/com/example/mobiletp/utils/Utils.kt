@@ -4,6 +4,8 @@ import android.net.Uri
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.cos
+import kotlin.math.sin
 
 class Utils {
 
@@ -13,12 +15,12 @@ class Utils {
             .now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         var result:String
 
-        if (outputDateString.day() == currentDateString.day()) {
+        result = if (outputDateString.day() == currentDateString.day()) {
             if (outputDateString.hour() == currentDateString.hour()) {
-                result = (currentDateString.minute().toInt() - outputDateString.minute().toInt()).toString() + " minutes ago"
-            } else result = (currentDateString.hour().toInt() - outputDateString.hour().toInt()).toString() + " hours ago"
+                (currentDateString.minute().toInt() - outputDateString.minute().toInt()).toString() + " minutes ago"
+            } else (currentDateString.hour().toInt() - outputDateString.hour().toInt()).toString() + " hours ago"
         } else {
-            result = outputDateString
+            outputDateString
         }
         return "Posted at $result"
     }
@@ -42,9 +44,9 @@ class Utils {
         val v = random.nextDouble()
         val w = radiusInDegrees * Math.sqrt(u)
         val t = 2.0 * Math.PI * v
-        val x = w * Math.cos(t)
-        val y = w * Math.sin(t)
-        val new_x = x / Math.cos(Math.toRadians(y0))
+        val x = w * cos(t)
+        val y = w * sin(t)
+        val new_x = x / cos(Math.toRadians(y0))
         val foundLongitude = new_x + x0
         val foundLatitude = y + y0
         return Uri.parse("geo:$foundLongitude,$foundLatitude")
